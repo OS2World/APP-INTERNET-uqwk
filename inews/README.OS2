@@ -1,0 +1,28 @@
+
+                           MINI-INEWS for OS/2
+
+                        OS/2 port by Claudio Fahey
+                        claudio@uclink.berkeley.edu
+ 
+    To install, just copy this to a directory in your path.  If you're
+    going to be posting articles without a valid "From:"  header, you'll 
+    need to define the following environment variables:  
+
+        REALNAME    Your real name such as "Claudio Fahey"
+
+        USER        Your login name.  This could be anything in OS/2.
+
+        DOMAIN      Your domain name.  For example, the domain name of
+                    "uclink.berkeley.edu" is "berkeley.edu".
+
+    I commented out the append_signature() line so that the signature
+    is not added to the posting.  Usually, the message being posted will
+    already have the signature appended.
+
+    Feel free to send comments, bug reports, or suggestions related to
+    this OS/2 port to me.
+
+    Claudio Fahey
+    claudio@uclink.berkeley.edu
+
+

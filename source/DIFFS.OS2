@@ -1,0 +1,287 @@
+diff ./close.c UQWK1.8/close.c
+70c70
+< 	if (NULL == (ctl_fd = fopen (ctl_fname, "wb")))
+---
+> 	if (NULL == (ctl_fd = fopen (ctl_fname, "w")))
+diff ./init.c UQWK1.8/init.c
+43c43
+< 		if (NULL == (msg_fd = fopen (msg_fname, "wb")))
+---
+> 		if (NULL == (msg_fd = fopen (msg_fname, "w")))
+diff ./mail.c UQWK1.8/mail.c
+23c23
+< 	if (NULL == (mail_fd = fopen (mail_file, "rb")))
+---
+> 	if (NULL == (mail_fd = fopen (mail_file, "r")))
+70c70
+< 		if (NULL == (mail_fd = fopen (mail_file, "wb")))
+---
+> 		if (NULL == (mail_fd = fopen (mail_file, "w")))
+291c291
+< 	if (NULL == (mai_fd = fopen (fn, "wb")))
+---
+> 	if (NULL == (mai_fd = fopen (fn, "w")))
+diff ./Makefile UQWK1.8/Makefile
+2c2
+< #  Makefile for uqwk
+---
+> #  Makefile for NNTP version of uqwk
+6c6
+< CFLAGS=
+---
+> CFLAGS=-DSERVER
+10c10
+< #CFLAGS=-cckr
+---
+> #CFLAGS=-cckr -DSERVER
+13c13
+< #CFLAGS=-Od
+---
+> #CFLAGS=-Od -DSERVER
+15,16c15,16
+< uqwk:	uqwk.o options.o init.o mail.o misc.o close.o news.o reply.o offline.o
+< 	$(CC) -o uqwk uqwk.o options.o init.o mail.o misc.o close.o news.o reply.o offline.o
+---
+> uqwk:	uqwk.o options.o init.o mail.o misc.o close.o news.o reply.o offline.o nntpclient.o nntplib.o
+> 	$(CC) -o uqwk uqwk.o options.o init.o mail.o misc.o close.o news.o reply.o offline.o nntpclient.o nntplib.o
+30c30
+< news.o:	news.c uqwk.h
+---
+> news.o:	news.c uqwk.h nntp.h
+35a36,39
+> nntpclient.o:	nntpclient.c nntp.h
+> 
+> nntplib.o:	nntplib.c nntp.h
+> 
+40c44
+< 	tar cvf uqwk.tar *.[ch] Makefile* README uqwk.man uqwk.cat HISTORY door.id FAQ
+---
+> 	tar cvf uqwk.tar *.[ch] Makefile* README uqwk.man uqwk.cat HISTORY door.id
+Only in .: Makefile.os2
+Only in .: MakeTCPIP.cmd
+diff ./misc.c UQWK1.8/misc.c
+60c60
+< 		if (NULL == (msg_fd = fopen (msg_fn, "wb")))
+---
+> 		if (NULL == (msg_fd = fopen (msg_fn, "w")))
+81c81
+< 		if (NULL == (ndx_fd = fopen (ndx_fn, "wb")))
+---
+> 		if (NULL == (ndx_fd = fopen (ndx_fn, "w")))
+diff ./news.c UQWK1.8/news.c
+47c47
+< 		sprintf(active_name,"%s/rrnact.%d",TEMPDIR,getpid());
+---
+> 		sprintf(active_name,"/tmp/rrnact.%d",getpid());
+73c73
+< 				sprintf(active_name,"%s/rrnact.%d",TEMPDIR,getpid());
+---
+> 				sprintf(active_name,"/tmp/rrnact.%d",getpid());
+97c97
+< 		sprintf(active_name,"%s/rrnact.%d",TEMPDIR,getpid());
+---
+> 		sprintf(active_name,"/tmp/rrnact.%d",getpid());
+119c119
+< 				sprintf(active_name,"%s/rrnact.%d",TEMPDIR,getpid());
+---
+> 				sprintf(active_name,"/tmp/rrnact.%d",getpid());
+153c153
+< 		sprintf(active_name,"%s/rrnact.%d",TEMPDIR,getpid());
+---
+> 		sprintf(active_name,"/tmp/rrnact.%d",getpid());
+304c304
+< 	if (NULL == (act_fd = fopen (act_file, "rb")))
+---
+> 	if (NULL == (act_fd = fopen (act_file, "r")))
+442c442
+<     	sprintf(art_file,"%s/rrn%ld.%ld", TEMPDIR, (long) artnum, getpid());
+---
+>     	sprintf(art_file,"/tmp/rrn%ld.%ld", (long) artnum, getpid());
+448c448
+< 	if (NULL == (art_fd = fopen (art_file, "rb"))) return (0);
+---
+> 	if (NULL == (art_fd = fopen (art_file, "r"))) return (0);
+971c971
+< 	if (NULL == (nws_fd = fopen (fn, "wb")))
+---
+> 	if (NULL == (nws_fd = fopen (fn, "w")))
+979c979
+< 	if (NULL == (idx_fd = fopen (fn, "wb")))
+---
+> 	if (NULL == (idx_fd = fopen (fn, "w")))
+1000c1000
+< 	if (NULL == (fd = fopen (fn, "wb")))
+---
+> 	if (NULL == (fd = fopen (fn, "w")))
+diff ./nntpclient.c UQWK1.8/nntpclient.c
+30d29
+< #include "uqwk.h"
+106c105
+<     sprintf(active_name,"%s/rrnact.%d",TEMPDIR,getpid());
+---
+>     sprintf(active_name,"/tmp/rrnact.%d",getpid());
+108c107
+<     actfp = fopen(active_name, "w+b");	/* and get ready */
+---
+>     actfp = fopen(active_name, "w+");	/* and get ready */
+181,182c180,181
+<     sprintf(artname,"%s/rrn%ld.%ld", TEMPDIR, (long) artnum, getpid());
+<     artfp = fopen(artname, "w+b");	/* create the temporary article */
+---
+>     sprintf(artname,"/tmp/rrn%ld.%ld", (long) artnum, getpid());
+>     artfp = fopen(artname, "w+");	/* create the temporary article */
+diff ./nntplib.c UQWK1.8/nntplib.c
+81,87c81,82
+< #ifdef NOFDOPEN
+<  #include "sockstream.h"
+<  int     sockt = -1;
+< #else
+<  FILE	*ser_rd_fp = NULL;
+<  FILE	*ser_wr_fp = NULL;
+< #endif
+---
+> FILE	*ser_rd_fp = NULL;
+> FILE	*ser_wr_fp = NULL;
+122c117
+< 	fp = fopen(file, "rb");
+---
+> 	fp = fopen(file, "r");
+159a155
+> #ifdef DECNET
+162,167d157
+< #ifdef NOFDOPEN
+<     sockt = get_tcp_socket(machine);
+<     if (sockt < 0)
+<         return (-1);
+< #else /* !NOFDOPEN */
+< #ifdef DECNET
+207d196
+< #endif /* NOFDOPEN */
+582,584d570
+< #ifdef NOFDOPEN
+< 	sockprintf(sockt, "%s\r\n", string);
+< #else
+587d572
+< #endif
+611,613d595
+< #ifdef NOFDOPEN
+<     if (sockgets(string, size, sockt) == NULL)
+< #else
+615d596
+< #endif
+648,650d628
+< #ifdef NOFDOPEN
+<     if (sockt == -1)
+< #else
+652d629
+< #endif
+658d634
+< #ifndef NOFDOPEN
+661d636
+< #endif
+diff ./options.c UQWK1.8/options.c
+21c21
+< /* 		fprintf (stderr, "%s: warning: you don't exist\n", progname); */
+---
+> 		fprintf (stderr, "%s: warning: you don't exist\n", progname);
+Only in .: README.OS2
+diff ./reply.c UQWK1.8/reply.c
+26c26
+< 	if (NULL == (rep_fd = fopen (rep_file, "rb")))
+---
+> 	if (NULL == (rep_fd = fopen (rep_file, "r")))
+173c173
+< 			sprintf (buf, "%s", INEWS_PATH);
+---
+> 			sprintf (buf, "%s", XPRT_INEWS);
+206c206
+< 			sprintf (buf, "%s -t", SENDMAIL_PATH);
+---
+> 			sprintf (buf, "%s", XPRT_MAILER);
+398c398
+< 	if (NULL == (fd = fopen (fn, "rb")))
+---
+> 	if (NULL == (fd = fopen (fn, "r")))
+434c434
+< 		sprintf (cmd, "%s -t", SENDMAIL_PATH);
+---
+> 		sprintf (cmd, "%s", SLNP_MAILER);
+465c465
+< 	if (NULL == (fd = fopen (fn, "rb")))
+---
+> 	if (NULL == (fd = fopen (fn, "r")))
+491c491
+< 		SLPipe (fd, bytes, INEWS_PATH);
+---
+> 		SLPipe (fd, bytes, SLNP_INEWS);
+513c513
+< 	if (NULL == (fd = fopen (fn, "rb")))
+---
+> 	if (NULL == (fd = fopen (fn, "r")))
+543c543
+< 		sprintf (cmd, "%s -t", SENDMAIL_PATH);
+---
+> 		sprintf (cmd, "%s", SLNP_MAILER);
+574c574
+< 	if (NULL == (fd = fopen (fn, "rb")))
+---
+> 	if (NULL == (fd = fopen (fn, "r")))
+595c595
+< 		SLPipe (fd, bytes, INEWS_PATH);
+---
+> 		SLPipe (fd, bytes, SLNP_INEWS);
+715c715
+< 	if (NULL == (zz = fopen (fn, "rb")))
+---
+> 	if (NULL == (zz = fopen (fn, "r")))
+758c758
+< 	if (NULL == (fd = fopen (fn, "rb"))) return (0);
+---
+> 	if (NULL == (fd = fopen (fn, "r"))) return (0);
+775c775
+< 	sprintf (buf, "%s '%s'", SENDMAIL_PATH, to);
+---
+> 	sprintf (buf, "%s '%s'", ZIP_MAILER, to);
+810c810
+< 			sprintf (buf, "%s '%s'", SENDMAIL_PATH, addr);
+---
+> 			sprintf (buf, "%s '%s'", ZIP_MAILER, addr);
+859c859
+< 	if (NULL == (fd = fopen (fn, "rb"))) return (0);
+---
+> 	if (NULL == (fd = fopen (fn, "r"))) return (0);
+864c864
+< 	if (NULL == (pfd = popen (INEWS_PATH,"w")))
+---
+> 	if (NULL == (pfd = popen (ZIP_INEWS, "w")))
+Only in .: sockstream.c
+Only in .: sockstream.h
+diff ./uqwk.h UQWK1.8/uqwk.h
+5c5
+< #define UQWK_VERSION	"1.8 (OS/2)"
+---
+> #define UQWK_VERSION	"1.8"
+13,14d12
+< #define TEMPDIR     (getenv("TEMP") ? getenv("TEMP") : ".")
+< 
+26,27c24,33
+< #define INEWS_PATH      (getenv("POSTER") ? getenv("POSTER") : "inews")  /* Where to find inews */
+< #define SENDMAIL_PATH   (getenv("MAILER") ? getenv("MAILER") : "sendmail")
+---
+> #define INEWS_PATH	"/usr/lib/news/inews"	/* Where to find inews */
+> 
+> #define SLNP_MAILER	"/usr/lib/sendmail -t"
+> #define SLNP_INEWS	"/usr/lib/news/inews -h"
+> 
+> #define ZIP_MAILER	"/usr/lib/sendmail"
+> #define ZIP_INEWS	"/usr/lib/news/inews -h"
+> 
+> #define XPRT_MAILER	"/usr/lib/sendmail -t"
+> #define XPRT_INEWS	"/usr/lib/news/inews -h"
+49,50c55,56
+< #define DEF_HOME_DIR	(getenv("HOME") ? getenv("HOME") : ".")
+< #define DEF_USER_NAME	(getenv("USER") ? getenv("USER") : "unknown")
+---
+> #define DEF_HOME_DIR	"."
+> #define DEF_USER_NAME	"unknown"
+

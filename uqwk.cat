@@ -1,0 +1,528 @@
+
+
+
+   uqwk version 1.8                                                   UQWK(1)
+
+
+
+   NAME
+     uqwk - Collect news and mail into packet for offline reading
+
+   SYNOPSIS
+     uqwk [options]
+
+   DESCRIPTION
+     uqwk is a program which collects all a user's unread mail or news and
+     formats it into a packet for offline reading, saving telephone and con-
+     nect charges.  QWK, Simple Offline Usenet Packet (SOUP), and ZipNews
+     formats are supported.
+
+     uqwk also accepts reply packets, so replies can be mailed or posted,
+     depending whether the message is marked private (email) or public
+     (news).
+
+     uqwk also supports a small offline command language, so the contents of
+     the user's .newsrc file can be viewed and manipulated offline.
+
+   OPTIONS
+
+     +m   Do mail.  uqwk will process all mail in the user's mail spool file
+          and convert it into an offline packet.  This is the default.
+
+     -m   Don't do mail.
+
+     +n   Do news.  Using the user's .newsrc file and the news system's
+          active file, uqwk will collect all unread news articles in all sub-
+          scribed newsgroups into the packet.  This can generate a large
+          number of messages and large packet files.
+
+     -n   Don't do news.  This is the default.
+
+     +h   Include headers.  Since the QWK specification places limits on the
+          sizes of certain header fields such as To:, From:, and Subject:,
+          uqwk can include all message and article headers in the body of the
+          message so all fields are visible.  This is the default.  (This
+          switch only applies to the QWK packet format.)
+
+     -h   Do not include headers in messages.  (QWK only.)
+
+     +e   Include an entry for every subscribed newsgroup in the CONTROL.DAT
+          file.  (QWK only).
+
+     -e   Do not include an entry in CONTROL.DAT for empty newsgroups.  This
+          is the default.  (QWK only.)
+
+     -p   Print options.  uqwk will examine all appropriate environment vari-
+          ables and command line options, print the values of all run-time
+          options, then exit.  This is useful to see what uqwk thinks it is
+          going to do before you actually run it.
+
+     +r   Read only.  Normally, uqwk will empty the user's mail spool file
+
+
+                                                                            1
+
+
+
+
+
+
+   UQWK(1)                                                   uqwk version 1.8
+
+
+          and update the user's .newsrc file to reflect the fact that mail
+          and news have been read.  If this switch is specified, uqwk will
+          not touch these files.  This is useful for testing.
+
+     -r   Do not execute in read-only mode.  This is the default.
+
+     +L   Operate in SOUP (also known as HDPF or SLNP) mode.  The files
+          comprising a Simple Offline Usenet Packet (SOUP), specifically,
+          AREAS and *.MSG, will be created instead of a QWK packet.  The
+          reply file, if any, will be interpreted as an SOUP "replies" file
+          instead of a QWK reply packet.
+
+     -L   Do not operate in SOUP mode.  This is the default.
+
+     +z   Operate in ZipNews mode.  The files comprising a ZipNews news
+          packet, specifically, "user.JN", "user.NWS", and "user.IDX", will
+          be created instead of a QWK packet.
+
+     -z   Do not operate in ZipNews mode.  This is the default.
+
+     +x   Honor Xref header lines in news articles.  When this switch is in
+          effect, uqwk will only pack a crossposted article in the first
+          newsgroup in which it is encountered.  This can reduce the size of
+          the packet but may introduce unexpected behavior on the part of the
+          offline reader.
+
+     -x   Do not honor Xref lines.  This is the default.
+
+     +W   Activate the Blue Wave kludge.  The Blue Wave QWK reader does not
+          like the personal.ndx file that uqwk creates by default.  If this
+          switch is specified uqwk will create a regular ???.ndx file that
+          Blue Wave likes.  (QWK only.)
+
+     -W   Do not activate the Blue Wave kludge.  This is the default.
+
+     +X   Operate in expert QWK mode.  The QWK header is ignored and all
+          header lines are taken from the body of the message.  In the hands
+          of an expert, this permits the creation of RFC822 compliant mail
+          messages and RFC1036 compliant news articles using QWK readers,
+          which is difficult or impossible otherwise in many cases.  This is
+          intended for people who really know what they're doing.  (QWK
+          only.)
+
+     -X   Do not operate in expert QWK mode.  This is the default.
+
+     -M_m_a_i_l_d_i_r
+          Look in the directory _m_a_i_l_d_i_r for the mail spool file.  The default
+          is /usr/spool/mail.
+
+     -f_m_a_i_l_f_i_l_e
+          Look for mail in the file _m_a_i_l_f_i_l_e.  The default is a file with the
+          same name as the user's login name in _m_a_i_l_d_i_r.  This switch over-
+          rides the -M switch.
+
+
+
+   2
+
+
+
+
+
+
+   uqwk version 1.8                                                   UQWK(1)
+
+
+     -u_u_s_e_r_n_a_m_e
+          By default uqwk uses the getpwuid() system call to determine the
+          proper user name to use.  This switch overrides the results of that
+          call.
+
+     -H_h_o_m_e_d_i_r
+          By default, uqwk uses the getpwuid() system call to determine the
+          user's home directory.  The home directory is where the files
+          comprising the offline packet will be created.  It is also where
+          uqwk looks for the .newsrc file.  This switch may be used to over-
+          ride the results of the getpwuid() call.
+
+     -b_b_b_s_n_a_m_e
+          Specify the BBS Name to be entered into the QWK packet.  The
+          default is "unknown BBS".  (QWK only.)
+
+     -c_c_i_t_y
+          Specify the BBS City to be entered into the QWK packet.  The
+          default is "Anytown, USA".  (QWK only.)
+
+     -P_p_h_o_n_e
+          Specify the BBS Phone Number to be entered into the QWK packet.
+          The default is "555-1212".  (QWK only.)
+
+     -s_s_y_s_o_p
+          Specify the BBS Sysop Name to be entered into the QWK packet.  The
+          default is "Joe Sysop".  (QWK only.)
+
+     -i_b_b_s_i_d
+          Specify the BBS ID to be entered into the QWK packet.  The BBS ID
+          is important since it will be checked against the BBS ID string in
+          any incoming reply packets.  If the two do not match, the reply
+          packet will not be processed.  The BBS ID consists of an integer, a
+          comma, and a string of less than nine characters, with no spaces.
+          The default is "0,SOMEBBS".  (QWK only.)
+
+     -a_a_c_t_i_v_e_f_i_l_e
+          Use _a_c_t_i_v_e_f_i_l_e for the list of all available newsgroups and article
+          numbers.  The default is /usr/lib/news/active.  This option is
+          ignored if articles are being obtained from a news server using
+          NNTP.
+
+     -N_n_e_w_s_r_c_f_i_l_e
+          Use _n_e_w_s_r_c_f_i_l_e for the list of all newsgroups to which the user is
+          subscribed and the list of article numbers which have been read.
+          The default is a file called ".newsrc" in the user's home direc-
+          tory.
+
+     +w   Interpret the _n_e_w_s_r_c_f_i_l_e as a Waffle "join" file instead of a regu-
+          lar Unix .newsrc.
+
+     -w   Do not interpret the _n_e_w_s_r_c_f_i_l_e as a Waffle "join" file.  This is
+          the default.
+
+
+
+                                                                            3
+
+
+
+
+
+
+   UQWK(1)                                                   uqwk version 1.8
+
+
+     -D_n_g_f_i_l_e
+          Process newsgroups in the order specified in _n_g_f_i_l_e.  _n_g_f_i_l_e is
+          expected to contain one newsgroup name per line.
+
+     -S_n_e_w_s_d_i_r
+          Look for news articles in the directory _n_e_w_s_d_i_r.  The default is
+          /usr/spool/news.  This option is ignored if articles are being
+          obtained from a news server using NNTP.
+
+     -B_m_a_x_b_l_o_c_k_s
+          Stop processing news articles if the size of the offline packet
+          exceeds _m_a_x_b_l_o_c_k_s 128-byte blocks.  This is useful since large
+          amounts of unread news can create large packets.  Use a _m_a_x_b_l_o_c_k_s
+          value of zero to suppress this check.  The default is 4000 blocks
+          (half a megabyte).
+
+     -t_t_a_b_l_e_f_i_l_e
+          Translate newsgroup names as specified in _t_a_b_l_e_f_i_l_e.  Each line in
+          _t_a_b_l_e_f_i_l_e is expected to have two fields separated by white space:
+          The old name of the newsgroup and the name to which it will be
+          translated.  (QWK only.)
+
+     -l_l_e_n
+          Truncate the names of newsgroups to _l_e_n characters.  Some offline
+          readers cannot handle long newsgroup names.  Newsgroup names are
+          truncated after having been translated.  The default is 15 charac-
+          ters.  Specify a value of zero for unlimited newsgroup name
+          lengths.  (QWK only.)
+
+     -R_r_e_p_l_y_f_i_l_e
+          Process _r_e_p_l_y_f_i_l_e as a reply packet.  Messages and articles created
+          by the offline reader must be uploaded as a reply packet and then
+          processed by this switch to be mailed or posted.  If operating in
+          SOUP mode, this file should be the REPLIES file.  uqwk will remove
+          _r_e_p_l_y_f_i_l_e when it has been processed unless it is running in read-
+          only mode.  If operating in ZipNews mode, this switch should
+          specify the directory in which the ZipNews reply files reside.
+
+     -d_h_o_s_t_n_a_m_e
+          Use the specified _h_o_s_t_n_a_m_e when processing ZipNews reply packets.
+          This should be the fully-qualified domain name of the Unix host.
+          The default is "nowhere".
+
+     -U_s_u_m_f_i_l_e
+          Operate in "summary" mode.  Instead of packing articles, uqwk
+          creates a summary file, _s_u_m_f_i_l_e, which consists of the newsgroup
+          name, article number, and subject line of each unread article.  All
+          summarized articles are marked as read.
+
+     -E_s_e_l_f_i_l_e
+          Operate in "selection" mode.  Instead of using the .newsrc file to
+          determine which articles to pack, uqwk reads _s_e_l_f_i_l_e, a file in the
+          same format as the summary file.  (The actual subjects are optional
+          in _s_e_l_f_i_l_e.)  The idea is that a summary may be created by using
+
+
+   4
+
+
+
+
+
+
+   uqwk version 1.8                                                   UQWK(1)
+
+
+          -U, downloaded, edited or processed by additional software to
+          select desired articles, uploaded, and fed to the -E switch for
+          offline article selection.
+
+     Most of the run-time options can also be controlled by environment vari-
+     ables.  If an option is specified by both an environment variable and a
+     command-line option, the command-line option is honored.
+
+     UQ_DO_MAIL
+          Determines whether or not to process mail.  Should be set to "1"
+          (do mail) or "0" (don't do mail).
+
+     UQ_DO_NEWS
+          Determines whether or not to process news.  Should be set to "1"
+          (do news) or "0" (don't do news).
+
+     UQ_INC_HDRS
+          Determines whether or not to include headers in messages.  Should
+          be set to "1" (include headers) or "0" (don't include headers).
+
+     UQ_EVERY_MODE
+          Determines whether or not to include an entry in CONTROL.DAT for
+          empty newsgroups.  Should be set to "1" (include empty groups) or
+          "0" (don't include empty groups).
+
+     UQ_PRT_OPTS
+          Determines whether or not to just print the values of run-time
+          options and stop.  Should be set to "1" (print options) or "0"
+          (don't print options).
+
+     UQ_READ_ONLY
+          Determines whether or not to run in read-only mode.  Should be set
+          to "1" (read-only) or "0" (not read-only).
+
+     UQ_WAF_MODE
+          Determines whether the .newsrc file should be interpreted as a Waf-
+          fle "join" file.  Should be set to "0" (normal) or "1" (Waffle
+          mode).
+
+     UQ_SOUP_MODE
+          Determines whether or not to run in SOUP mode.  Should be set to
+          "0" (don't run in SOUP mode) or "1" (run in SOUP mode).
+
+     UQ_ZIP_MODE
+          Determines whether or not to run in ZipNews mode.  Should be set to
+          "0" (don't run in ZipNews mode) or "1" (run in ZipNews mode).
+
+     UQ_XRF_MODE
+          Determines whether or not to honor Xref lines.  Should be set to
+          "0" (do not honor Xref lines) or "1" (honor Xref lines).
+
+     UQ_BW_KLUDGE
+          Determines whether or not to activate the Blue Wave kludge.  Should
+          be set to "0" (do not activate the Blue Wave kludge) or "1"
+
+
+                                                                            5
+
+
+
+
+
+
+   UQWK(1)                                                   uqwk version 1.8
+
+
+          (activate the Blue Wave kludge).
+
+     UQ_XPRT_MODE
+          Determines whether or not to operate in QWK expert mode.  Should be
+          set to "0" (do not run in expert mode) or "1" (run in expert mode).
+
+     UQ_MAIL_DIR
+          Specifies the directory where the mail spool file resides.
+
+     UQ_MAIL_FILE
+          Specifies the mail spool file.
+
+     UQ_USER_NAME
+          Specifies the username of the person running uqwk.
+
+     UQ_HOME_DIR
+          Specifies the home directory, where the packet files will be
+          created, and where uqwk expects to find the .newsrc file.
+
+     UQ_BBS_NAME
+          Specifies the BBS name to be entered into the QWK packet.
+
+     UQ_BBS_CITY
+          Specifies the BBS city to be entered into the QWK packet.
+
+     UQ_BBS_PHONE
+          Specifies the BBS phone number to be entered into the QWK packet.
+
+     UQ_BBS_SYSOP
+          Specifies the BBS sysop name to be entered into the QWK packet.
+
+     UQ_BBS_ID
+          Specifies the BBS ID to be entered into the QWK packet.
+
+     UQ_ACT_FILE
+          Specifies the name of the news system's active file.
+
+     UQ_NRC_FILE
+          Specifies the name of the user's .newsrc file.
+
+     UQ_NG_FILE
+          Specifies the name of the desired newsgroups file.
+
+     UQ_MAX_BLKS
+          Specifies the maximum size of the offline packet in 128-byte
+          blocks.
+
+     UQ_TRN_FILE
+          Specifies the name of the newsgroup name translation table.
+
+     UQ_GRP_LEN
+          Specifies the maximum length of newsgroup names.
+
+     UQ_REP_FILE
+
+
+   6
+
+
+
+
+
+
+   uqwk version 1.8                                                   UQWK(1)
+
+
+          Specifies the name of the reply packet, if any.
+
+     UQ_HOST_NAME
+          Specifies the host name for ZipNews replies.
+
+     UQ_SUM_FILE
+          Specifies the name of the summary file, if any.  Also causes uqwk
+          to execute in summary mode.
+
+     UQ_SEL_FILE
+          Specifies the name of the selection file, if any.  Also causes uqwk
+          to execute in selection mode.
+
+   COMMAND LANGUAGE
+     If, while processing a reply packet, uqwk encounters a message to the
+     username "UQWK", the body of the message will be interpreted as a small
+     command language, used to display newsgroup names and subscribe or
+     unsubscribe to newsgroups.  The results of the execution of the commands
+     will be mailed back to the originating user.
+
+     This is what the command language looks like:
+
+     HELP List all the available commands.
+
+     SUBSCRIBE newsgroup
+          Subscribe to the named newsgroup.
+
+     UNSUBSCRIBE newsgroup
+          Unsubscribe from the named newsgroup.  UNSUBSCRIBE ALL may be used
+          to unsubscribe from all newsgroups.  UNSUBSCRIBE ALL is also the
+          only way to create a new .newsrc if it does not already exist.
+
+     CATCHUP newsgroup
+          Mark all articles in the named newsgroup as read.
+
+     GROUPS
+          List all newsgroups to which the user is currently subscribed.
+
+     ALLGROUPS
+          List all the available newsgroups and the number of articles in
+          each one.
+
+     SHELL command
+          Execute the specified shell command.  Anything written to standard
+          output will be mailed back to the originating user.
+
+   NOTES
+     In QWK mode, it is possible to send mail to long email addresses by
+     including, as the first thing in the body of the message, a line of the
+     form:
+
+                                To: user@site.com
+
+
+
+
+                                                                            7
+
+
+
+
+
+
+   UQWK(1)                                                   uqwk version 1.8
+
+
+     (The space after the colon is important.)
+
+   BUGS
+
+     The handling of MMDF mail files is kludgy and should be fixed.
+
+     In QWK mode, if the .newsrc file is modified significantly between the
+     time a packet is created and the time replies to that packet are pro-
+     cessed, it is possible that articles may be posted to the wrong news-
+     group.  If you use uqwk along with a conventional online newsreader, it
+     may be wise to maintain a separate .newsrc file strictly for uqwk.
+
+     uqwk does not do mail locking.  If new mail arrives while uqwk is pack-
+     ing mail, the new message may be lost.  If you're worried about this,
+     either make a copy of your mail spool before running uqwk, or run uqwk
+     in read-only mode and erase your mail spool manually when you think it
+     is safe.
+
+     uqwk does not support the ZipNews offline commands.  To perform offline
+     configuration using uqwk, send mail to the username "UQWK" in the format
+     described in the COMMAND LANGUAGE section above.
+
+   SEE ALSO
+     mail(1), inews(8)
+
+   ACKNOWLEDGEMENTS
+
+     uqwk was inspired by a conversation with Harry Lockwood
+     (lockwood@world.std.com).
+
+     QWK format was designed by Mark "Sparky" Herring
+     (mark.herring@nashville.com).  The creator of SOUP is Rhys Weatherley
+     (rhys@cs.uq.oz.au).  The creator of ZipNews is Jack Kilday
+     (jkilday@nlbbs.com).
+
+     Thanks to Patrick Y. Lee (patlee@panix.com) for the QWK documentation.
+     Many thanks also to the beta-testers:  Karl J. Vesterling
+     (kjv@exucom.com) and Brian J. Coan (brian@igc.apc.org).
+
+     Many thanks to Ken Whedbee (kcw@grumpy.ksc.nasa.gov) for the NNTP modif-
+     ications.
+
+     Many other people, too numerous to list here, contributed bug fixes and
+     suggestions for improvement.
+
+   AUTHOR
+     steve belczyk, steve1@genesis.nred.ma.us, seb3@gte.com.
+
+     Copyright (C) 1993-1994 by steve belczyk.  Permission to use, copy,
+     modify and distribute this software and its documentation for any pur-
+     pose and without fee is hereby granted, provided that the above copy-
+     right notice appear in all copies and that both that copyright notice
+     and this permission notice appear in supporting documentation.  This
+     software is provided "as is" without expressed or implied warranty.
+
+
+   8
+
+
+99

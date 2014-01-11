@@ -1,0 +1,6 @@
+/*
+ * Provide the version number of this release.
+ */
+
+char	nntp_version[] = "1.5.7 (10 November 89)";
+

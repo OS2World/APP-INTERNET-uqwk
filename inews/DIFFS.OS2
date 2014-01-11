@@ -1,0 +1,95 @@
+[ clientlib.c is much different because it was taken from uqwk's nntplib.c ]
+diff ./conf.h inews.org/conf.h
+31a32,33
+> #include	"config.h"
+> 
+52c54
+< #define	DOMAIN	(getenv("DOMAIN") ? getenv("DOMAIN") : "")
+---
+> /* #define	DOMAIN	"frobozz.com.bogus" */
+diff ./inews.c inews.org/inews.c
+33,34c33
+< #include "sockstream.h"
+< extern int sockt;
+---
+> extern	FILE	*ser_wr_fp;
+110c109
+< 			(void) sockputc('.', sockt);
+---
+> 			(void) fputc('.', ser_wr_fp);
+129c128
+< 		sockprintf(sockt, "%s\r\n", s);
+---
+> 		fprintf(ser_wr_fp, "%s\r\n", s);
+132c131
+< /* 	append_signature(); */
+---
+> 	append_signature();
+134c133,134
+< 	sockprintf(sockt, ".\r\n");
+---
+> 	fprintf(ser_wr_fp, ".\r\n");
+> 	(void) fflush(ser_wr_fp);
+210c210
+< 	sockprintf(sockt, "--\r\n");
+---
+> 	fprintf(ser_wr_fp, "--\r\n");
+224c224
+< 		sockprintf(sockt, "%s\r\n", line);
+---
+> 		fprintf(ser_wr_fp, "%s\r\n", line);
+247c247
+< 	struct	passwd passwd1, *passwd = &passwd1;
+---
+> 	struct	passwd *passwd;
+250,251c250,257
+<     full_name = getenv("REALNAME");
+<     passwd->pw_name = getenv("USER");
+---
+> 	passwd = getpwuid(getuid());
+> 
+> 	full_name = getenv("NAME");
+> 	if (full_name == NULL) {
+> 		full_name = passwd->pw_gecos;
+> 		if ((cp = index(full_name, ',')))
+> 			*cp = '\0';
+> 	}
+255c261
+< 		sockprintf(sockt, "From: %s@%s (",
+---
+> 		fprintf(ser_wr_fp, "From: %s@%s (",
+264c270
+< 		sockprintf(sockt, "From: %s@%s (",
+---
+> 		fprintf(ser_wr_fp, "From: %s@%s (",
+268c274
+< 		sockprintf(sockt, "From: %s@%s.%s (",
+---
+> 		fprintf(ser_wr_fp, "From: %s@%s.%s (",
+274c280
+< 	sockprintf(sockt, "From: %s@%s (",
+---
+> 	fprintf(ser_wr_fp, "From: %s@%s (",
+281c287
+< 			sockputc(*cp, sockt);
+---
+> 			putc(*cp, ser_wr_fp);
+283,284c289,290
+< 			sockputc(toupper(passwd->pw_name[0]), sockt);
+< 			sockprintf(sockt, passwd->pw_name+1);
+---
+> 			putc(toupper(passwd->pw_name[0]), ser_wr_fp);
+> 			fprintf(ser_wr_fp, passwd->pw_name+1);
+287c293
+< 	sockprintf(sockt, ")\r\n");
+---
+> 	fprintf(ser_wr_fp, ")\r\n");
+291c297
+< 	sockprintf(sockt, "Path: %s\r\n", passwd->pw_name);
+---
+> 	fprintf(ser_wr_fp, "Path: %s\r\n", passwd->pw_name);
+293c299
+< 	sockprintf(sockt, "Path: %s!%s\r\n", host_name, passwd->pw_name);
+---
+> 	fprintf(ser_wr_fp, "Path: %s!%s\r\n", host_name, passwd->pw_name);
+

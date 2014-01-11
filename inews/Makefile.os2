@@ -1,0 +1,73 @@
+# Makefile for NN version of mini inews.
+#
+# $RCSfile: Makefile,v $	$Revision: 1.3 $
+#
+# $Author: news $	$Date: 89/12/21 17:59:52 $
+#
+# $State: Exp $	$Locker:  $
+#
+# $Log:	Makefile,v $
+# Revision 1.3  89/12/21  17:59:52  news
+# Added kit processing, cleanups.
+#
+# Modified for OS/2 on 9/11/94 by Claudio Fahey (claudio@uclink.berkeley.edu)
+#      Note: Requires tcpip.a library.  Create this with MakeTCPIP.cmd.
+#
+
+TARGET	= inews.exe
+
+BINDIR	= /usr/lib/news/
+#SHELL	= /bin/sh
+
+CC	= gcc
+# General definitions here which apply to all -- form -DDEF
+DEFS	= -DNOFDOPEN
+# Link libraries -- form -lLIB
+LIBS	= -ltcpip
+# Lint definitions -- same as DEFS, but form -D DEF
+LDEFS	= -D lint -D FOR_NN
+# Lint libraries -- same as LIBS, but form -l LIB
+LLIBS	=
+# Set to -g for debugging, -O for optimise, or both if compiler handles it
+DEBUG	= -O2
+CFLAGS	= $(DEBUG) $(DEFS)
+
+SRCS	= inews.c clientlib.c version.c sockstream.c
+OBJS	= inews.o clientlib.o version.o sockstream.o
+CLUDES	= clientlib.h conf.h nntp.h sockstream.h
+KIT	= Makefile README README.NN $(SRCS) $(CLUDES)
+
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS) $(LIBS)
+
+$(OBJS):	$(CLUDES)
+
+all:	$(TARGET)
+
+Manifest:	$(KIT)
+	touch Manifest
+	rm -f foo
+	ls -ls Manifest $(KIT) > foo
+	mv foo Manifest
+	ls -ls Manifest $(KIT) > foo
+	mv foo Manifest
+
+kit:	Manifest
+	shar Manifest $(KIT) > inews.shar
+
+clean:
+	rm -f $(OBJS) core lint tags
+
+clobber:	clean
+	rm -f $(TARGET) Make.Log Manifest $(KIT)
+
+lint:	$(SRCS)
+	lint -D lint $(LLIBES) $(LDEFS) $(SRCS) > lint
+
+tags:	$(SRCS)
+	ctags $(SRCS)
+
+install:	$(TARGET)
+	../inst inews $(TARGET)
+#	install -o news -g news -m 511 -s -c $(TARGET) $(BINDIR)
+

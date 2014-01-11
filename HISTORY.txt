@@ -1,0 +1,99 @@
+uqwk1.8:
+
+- Fixed fclose() of non-open file in close.c which caused core dumps.
+- Properly define sum_flag in uqwk.h to keep compilers happy.
+- Support for a desired newsgroup table, used to specify the order of
+  newsgroup processing instead of the .newsrc.  (-D)
+- Don't write ZipNews mail file if no mail.
+- ^Z's stripped in ZipNews mode to keep ZNR happy.
+- Command language works in ZipNews mode (really!).
+- Various changes and cleanup suggested by nick@kralizec.zeta.org.au (Nick)
+- Various changes and cleanup suggested by raarts@hacktic.nl (Ron Arts)
+  (Thanks guys!)
+- Unsubscribed groups not listed by GROUPS offline command.
+- Sanity checking on options:
+	sum_mode | sel_mode -> do_news
+	sum_mode -> !zip_mode && !slnp_mode
+	sum_mode -> !do_mail
+- artnum problem in NNTP code fixed, caused core dumps.
+- CR's causing off-by-one error in offline processing, fixed.
+- MODE READER sent to NNTP server to keep INN happy.
+- Quote "to" address in sendmail popen()'s, so addresses like
+  "seb3@gte.com (steve belczyk)" work now.
+- Use "sendmail -t" in SOUP mode -- Bcc: works now.
+- Verbose messages in ZipNews and SOUP mode.
+- Use "SOUP" in documentation.
+- Option to write every group to control.dat.  (+e)
+- Selection mode fooled by CR's.  Fixed.
+- Email conference number wrong in selection mode.  Fixed.
+- Don't write control file if just replying.
+
+uqwk1.7:
+
+- Command language works for ZipNews and Helldiver
+- CATCHUP offline command
+- Write ZipNews mail
+- Block limit works in ZipNews and HDPF modes
+- Option to suppress crossposting (+x)
+- Ignore empty groups
+- Blue wave kludge (+W)
+- Process .newsrc frontwards
+- Expert QWK mode (+X)
+- ZipNews replies
+- Handle Cc: lines in HDPF and ZipNews modes
+- Offline subject selection (-U and -E)
+- Fix NNTP null file descriptor bug
+- FAQ list
+
+uqwk 1.6:
+
+- Added Helldiver (SLNP) support
+- Added ZipNews news-reading support
+- Fixed a bug in date parsing
+- Support "holes" in the .newsrc
+- Include door.id file
+
+uqwk 1.5:
+
+- In ReadNewsrc, assign a conference number of -1 to unsubscribed
+  newsgroups.
+- Somehow handle bogus groups that don't appear in the active file.
+  Maybe they should be treated as unsubscribed groups.
+- Better From: field parsing
+- Start processing articles at the active low if it's greater than
+  the newsrc hi.
+- Fix the nagging bug in LastInt().
+- stderr in line 60 of init.c.
+- Make followups work with NNTP's mini-inews.
+- Get rid of prototypes in news.c.
+- New SHELL offline command.
+
+uqwk 1.4:
+
+- News articles can be obtained from a news server using NNTP (thanks
+  to Ken Whedbee).
+- Long email addresses can be specified in a "To:" line in the body of
+  replies.
+- The newsrc file can be interpreted as a Waffle "join" file.
+- A newsgroup name translation table is supported.
+
+uqwk 1.3:
+
+- Fix a big problem which caused articles to be posted to the wrong
+  newsgroup.
+
+uqwk 1.2:
+
+- Fix a pretty nasty bug reading some .newsrc files.
+
+uqwk 1.1:
+
+- A new switch, "-l" to limit the length of newsgroup names.
+- Core dumps on unsubscribed, unread newsgroups fixed.
+- Control.dat now created in proper directory.
+- Some other small changes and code clean-up.
+
+uqwk 1.0:
+
+- Original release
+

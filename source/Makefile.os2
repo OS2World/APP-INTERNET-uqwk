@@ -1,0 +1,48 @@
+#
+#  Makefile for NNTP version of uqwk
+#
+#  steve belczyk  02/93
+#
+#  Modified for OS/2 on 9/11/94 by Claudio Fahey (claudio@uclink.berkeley.edu)
+#      Note: Requires tcpip.a library.  Create this with MakeTCPIP.cmd.
+
+CFLAGS=-DSERVER -DNOFDOPEN -DBUFFERSOCKGETS -O2
+CC=gcc
+
+uqwk.exe:	uqwk.o options.o init.o mail.o misc.o close.o news.o reply.o offline.o nntpclient.o nntplib.o sockstream.o
+	$(CC) -o uqwk.exe uqwk.o options.o init.o mail.o misc.o close.o news.o reply.o offline.o nntpclient.o nntplib.o sockstream.o -ltcpip
+
+uqwk.o:	uqwk.c uqwk.h
+
+options.o:	options.c uqwk.h
+
+init.o:	init.c uqwk.h
+
+mail.o:	mail.c uqwk.h
+
+misc.o:	misc.c uqwk.h
+
+close.o:	close.c uqwk.h
+
+news.o:	news.c uqwk.h nntp.h
+
+reply.o:	reply.c uqwk.h
+
+offline.o:	offline.c uqwk.h
+
+nntpclient.o:	nntpclient.c nntp.h
+
+nntplib.o:	nntplib.c nntp.h
+
+sockstream.o:	sockstream.c sockstream.h
+
+clean:
+	rm -f *.o uqwk.exe
+
+tar:
+	tar cvf uqwk.tar *.[ch] Makefile* README uqwk.man uqwk.cat HISTORY door.id
+	compress -v uqwk.tar
+
+uu:
+	uuencode uqwk.tar.Z uqwk.tar.Z >uqwk.uu
+

@@ -1,0 +1,113 @@
+Frequently-Asked Questions about uqwk:
+________________________________________________________________________
+
+uqwk creates files called control.dat, messages.dat, and *.ndx.  How do
+I make a QWK packet from those files?
+
+A QWK packet is just a ZIP archive of those files.  So a command like
+"zip bbs.qwk control.dat messages.dat *.ndx" will create the QWK packet.
+If you don't have zip on your Unix system, contact your system
+administrator, or download those files and ZIP them on your PC.
+________________________________________________________________________
+
+My site gets news from a news server.  Can uqwk run in such an
+environment?
+
+Yes.  Compile the NNTP version of uqwk:  make -f Makefile.nntp
+See the README.
+________________________________________________________________________
+
+uqwk collects my email just fine, but why not my news?
+
+The default behavior is just that.  To get uqwk to collect your news,
+you have to explicitly ask it with the +n switch.  See the man page for
+details.
+________________________________________________________________________
+
+I tell uqwk to collect my news, but all I get is a bunch of empty *.ndx
+files.  What's wrong?
+
+You may need the NNTP version of uqwk.  See the README on how to compile
+the NNTP version.  If that fails, your site may be running non-standard
+news software.  Contact your news administrator for help.
+________________________________________________________________________
+
+Our site's mail is not in /usr/spool/mail.  Can anything be done?
+Our site's news is not in /usr/spool/news.  Can anything be done?
+Our site's active file is not in /usr/lib/news.  Can anything be done?
+
+uqwk has runtime switches to control all these things and many more.
+See the man page for details.
+________________________________________________________________________
+
+When I use uqwk to post a follow-up, it gets posted to the wrong
+newsgroup.  What can I do?
+
+Be sure you have the latest version (1.8 at this writing).  Also, see
+the BUGS section in the man page.
+________________________________________________________________________
+
+Is there any way to have uqwk create the packet files somewhere besides
+my home directory?
+
+Yes.  Use the -H switch to specify where you want the files to be
+created.  Since uqwk will also look in this directory for the .newsrc
+file, you'll probably also have to use the -N switch to tell uqwk where
+to find your .newsrc.
+________________________________________________________________________
+
+How do I get uqwk to process a QWK reply packet?
+
+A QWK reply packet, usually named something.REP, is simply a ZIP archive
+of something.MSG.  Unzip the archive, and feed something.MSG to uqwk
+thusly:  uqwk -m -n -Rsomething.MSG
+________________________________________________________________________
+
+How do I get uqwk to process an HDPF reply packet?
+
+Unzip the reply packet.  Be sure to use the -U switch of unzip or else
+the file names will be mapped to lower case and uqwk won't find them.
+Then feed the REPLIES file to uqwk thusly:  uqwk -m -n +L -RREPLIES
+________________________________________________________________________
+
+How do I get uqwk to process a ZipNews reply packet?
+
+Unzip the reply packet.  Then tell uqwk which *directory* the reply
+files are in.  For example, if they are in your current directory,
+invoke uqwk thusly:  uqwk -m -n +z -R.
+________________________________________________________________________
+
+I have the registered ZipNews reader, but uqwk refuses to process reply
+packets.  Why?
+
+Be sure to specify "packer : uqwk" in your ZipNews Reader configuration
+file.
+________________________________________________________________________
+
+Where can I FTP the latest version of uqwk?
+
+ftp.gte.com:/pub/uqwk
+________________________________________________________________________
+
+Where can I FTP reader programs?
+
+Numerous QWK readers exist for DOS, Windows, and OS/2.  There are far
+too many QWK readers to list here.  Patrick Y. Lee (patlee@panix.com)
+maintains an excellent, exhaustive list which is available from
+wuarchive.wustl.edu:/systems/ibmpc/msdos/offline/qwkp9307.zip.
+A good number of readers are located in the same directory.  One popular
+DOS reader that I like is SLMR (slmr21a.zip in the same directory).
+
+Helldiver Packet Viewer (DOS):  halcyon.com:/pub/incoming/hpv101b.zip
+Usenet Offline Reader (Windows):  ftp.gte.com:/pub/unor/unor0030.zip
+ZipNews reader (DOS):  ftp.gte.com:/pub/zipnews/znr092w.zip
+Yarn (DOS, OS/2): oak.oakland.edu:/pub/msdos/offline/yarn-055.zip
+________________________________________________________________________
+
+How can I get uqwk to work with my Waffle (Unix version) mailbox?
+
+Try changing the ^A's in the mailbox file to newlines:
+
+        tr '\001' '\012' <waffle-mailbox >tmp-mailbox
+        uqwk -ftmp-mailbox
+________________________________________________________________________
